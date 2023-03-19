@@ -1,6 +1,7 @@
 from time import time, sleep
 from enum import Enum
 import logging
+import struct
 from queue import Queue
 try:
     # Pymodbus >= 3.0
@@ -64,8 +65,8 @@ class modbus_interface():
                                               RetryOnEmpty=True, retries=1)
         else:
             self._mb = ModbusTcpClient(self._ip, self._port,
-                                       framer=ModbusSocketFramer, timeout=1,
-                                       RetryOnEmpty=True, retries=1)
+                                       framer=ModbusSocketFramer, timeout=3,
+                                       RetryOnEmpty=True, retries=3)
 
     def add_monitor_register(self, table, addr, type='uint16'):
         # Accepts a modbus register and table to monitor
@@ -188,7 +189,7 @@ def type_length(type):
     # Note: Each address provides 2 bytes of data.
     if type in ['int16', 'uint16']:
         return 1
-    elif type in ['int32', 'uint32']:
+    elif type in ['int32', 'uint32', 'float32']:
         return 2
     elif type in ['int64', 'uint64']:
         return 4
@@ -198,14 +199,17 @@ def type_signed(type):
     # Returns whether the provided type is signed
     if type in ['uint16', 'uint32', 'uint64']:
         return False
-    elif type in ['int16', 'int32', 'int64']:
+    elif type in ['int16', 'int32', 'int64', 'float32']:
         return True
     raise ValueError ("Unsupported type {}".format(type))
 
 def _convert_from_bytes_to_type(value, type):
     type = type.strip().lower()
     signed = type_signed(type)
-    return int.from_bytes(value,byteorder='big',signed=signed)
+    if type in ['float32']:
+        return struct.unpack('>f', value)[0]
+    else:
+        return int.from_bytes(value,byteorder='big',signed=signed)
 
 def _convert_from_type_to_bytes(value, type):
     type = type.strip().lower()
