@@ -1,0 +1,67 @@
+ip: 127.0.0.1
+port: 502
+update_rate: 30
+address_offset: 0
+scan_batching: 6
+word_order: highlow
+registers:
+  - pub_topic: "SDM630Mbus"
+    address: 0
+    json_key: voltage_l1
+    pub_only_on_change: false
+    table: input
+    type: float32
+  - pub_topic: "SDM630Mbus"
+    address: 2
+    json_key: voltage_l2
+    pub_only_on_change: false
+    table: input
+    type: float32
+  - pub_topic: "SDM630Mbus"
+    address: 4
+    json_key: voltage_l3
+    pub_only_on_change: false
+    table: input
+    type: float32
+  - pub_topic: "SDM630Mbus"
+    address: 48
+    json_key: current_total
+    pub_only_on_change: false
+    table: input
+    type: float32
+  - pub_topic: "SDM630Mbus"
+    address: 6
+    json_key: current_l1
+    pub_only_on_change: false
+    table: input
+    type: float32
+  - pub_topic: "SDM630Mbus"
+    address: 8
+    json_key: current_l2
+    pub_only_on_change: false
+    table: input
+    type: float32
+  - pub_topic: "SDM630Mbus"
+    address: 10
+    json_key: current_l3
+    pub_only_on_change: false
+    table: input
+    type: float32
+  - pub_topic: "SDM630Mbus"
+    address: 66
+    json_key: phase_angle
+    pub_only_on_change: false
+    table: input
+    type: float32
+  - pub_topic: "SDM630Mbus"
+    address: 70
+    json_key: frequency
+    pub_only_on_change: false
+    table: input
+    type: float32
+  - pub_topic: "SDM630Mbus"
+    address: 72
+    json_key: total_energy
+    pub_only_on_change: false
+    table: input
+    type: float32
